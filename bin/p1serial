@@ -3,12 +3,14 @@
 import sys
 import os
 
-from p1 import SerialPort, P1Proto, P1DBase
-
 rootpath = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.append(rootpath)
 
-print("hi");
+import argparse
+from p1 import SerialPort, P1Proto, P1DBase
+
+def main():
+    print("hi");
 
 
 if __name__ == "__main__":
@@ -18,12 +20,4 @@ if __name__ == "__main__":
     parser.add_argument('--dbase', type=str, default="/var/lib/p1serial/dbase.bin", help='SQL Lite dbase file')
     args = parser.parse_args()
 
-    script = load_client(args.module)
-    engine = load_simulation(args.maze)
-
-    if script and engine:
-        aloop = asyncio.get_event_loop()
-        aloop.run_until_complete(main(script, engine, aloop))
-        aloop.stop()
-    else:
-        print(f"Need valid script and maze in order to run")
+    main()
