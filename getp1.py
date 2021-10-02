@@ -96,7 +96,7 @@ while True:
 
             try:
                 if None not in (consumption_1, consumption_2, return_1, return_2):
-                    print(f"{consumption_1}/{consumption_2}/{return_1}/{return_2}/{timestamp}")
+                    # print(f"{consumption_1}/{consumption_2}/{return_1}/{return_2}/{timestamp}")
                     if timestamp >= hour_timestamp:
                         print(f"{consumption_1}/{consumption_2}/{return_1}/{return_2}/{timestamp}")
                         hour_timestamp = expires(60)
