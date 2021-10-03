@@ -1,4 +1,4 @@
 class P1DBase:
 
-    def __init__(self):
-        pass
+    def __init__(self, dbasepath):
+        self.dbasepath = dbasepath

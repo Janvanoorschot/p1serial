@@ -7,10 +7,35 @@ rootpath = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.append(rootpath)
 
 import argparse
+import asyncio
+
 from p1 import SerialPort, P1Proto, P1DBase
 
-def main():
-    print("hi");
+class Timer:
+    def __init__(self, timeout, callback, repeat=False):
+        self.timeout = timeout
+        self.callback = callback
+        self.repeat = repeat
+        self.task = asyncio.ensure_future(self.job())
+
+    async def job(self):
+        try:
+            await asyncio.sleep(self.timeout)
+        except asyncio.exceptions.CancelledError:
+            return
+        await self.callback()
+        if self.repeat:
+            self.task = asyncio.ensure_future(self.job())
+
+    def cancel(self):
+        self.repeat = False
+        self.task.cancel()
+
+
+async def main(p1proto):
+    timer = Timer(10, p1proto.timer, True)
+    await p1proto.run()
+    timer.cancel()
 
 
 if __name__ == "__main__":
@@ -20,4 +45,13 @@ if __name__ == "__main__":
     parser.add_argument('--dbase', type=str, default="/var/lib/p1serial/dbase.bin", help='SQL Lite dbase file')
     args = parser.parse_args()
 
-    main()
+    aloop = asyncio.get_event_loop()
+    serialport = SerialPort(aloop, args.port)
+    p1dbase = P1DBase(args.dbase)
+    p1proto = P1Proto(serialport, p1dbase)
+
+    if serialport and p1proto and p1dbase:
+        aloop.run_until_complete(main(p1proto))
+        aloop.stop()
+    else:
+        raise Exception("failure")
