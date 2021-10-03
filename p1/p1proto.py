@@ -1,5 +1,6 @@
 import asyncio
 import re
+import datetime
 
 
 class P1Proto:
@@ -42,7 +43,9 @@ class P1Proto:
         return result
 
     def handle_msg(self, msg):
-        print(msg)
+        delivtarief1 = msg['1-0:1.8.1']
+        delivtarief2 = msg['1-0:1.8.2']
+        self.p1dbase.record(datetime.datetime.now(), delivtarief1, delivtarief2)
 
 
     async def run(self):

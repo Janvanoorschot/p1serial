@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # get commandline arguments
     parser = argparse.ArgumentParser(description='Execute the P1 serial port reader.')
     parser.add_argument('--port', type=str, default="/dev/ttyUSB0", help='serial (USB) port to read')
-    parser.add_argument('--dbase', type=str, default="/var/lib/p1serial/dbase.bin", help='SQL Lite dbase file')
+    parser.add_argument('--dbase', type=str, default="/var/lib/p1serial/p1serial.db", help='SQL Lite dbase file')
     args = parser.parse_args()
 
     aloop = asyncio.get_event_loop()
