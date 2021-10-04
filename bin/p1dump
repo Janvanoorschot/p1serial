@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+import sqlite3
+import sys
+import os
+
+rootpath = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+sys.path.append(rootpath)
+
+import argparse
+
+
+if __name__ == "__main__":
+    # get commandline arguments
+    parser = argparse.ArgumentParser(description='Dump the P1 serial database.')
+    parser.add_argument('--dbase', type=str, default="/var/lib/p1serial/p1serial.db", help='SQL Lite dbase file')
+    args = parser.parse_args()
+
+    con = sqlite3.connect(args.dbase)
+    cur = con.cursor()
+    query = ('SELECT * FROM records')
+    cur.execute(query)
+    record = cur.fetchone()
+    while record != None:
+        print(record)
+        record = cur.fetchone()
+    con.close()

@@ -22,6 +22,7 @@ class P1DBase:
             cur = con.cursor()
             query = 'INSERT INTO records VALUES (?,?,?)'
             cur.execute(query, (timestamp, delivtarief1, delivtarief2))
+            con.commit()
             con.close()
             print(f"2 {timestamp.isoformat()}/{delivtarief1}/{delivtarief2}")
         except Exception as e:

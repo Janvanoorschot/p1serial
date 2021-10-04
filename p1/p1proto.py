@@ -26,8 +26,9 @@ class P1Proto:
         if block != None:
             msg = self.parse_block(block)
             self.handle_msg(msg)
-        if self.count > 10:
-            self.lock.release()
+
+    def stop(self):
+        self.lock.release()
 
     def parse_block(self, block):
         result = {}
@@ -47,9 +48,7 @@ class P1Proto:
         delivtarief2 = msg['1-0:1.8.2']
         self.p1dbase.record(datetime.datetime.now(), delivtarief1, delivtarief2)
 
-
     async def run(self):
         # yes, two awaits. Why cant Lock start in locked mode?
         await self.lock.acquire()
         await self.lock.acquire()
-
