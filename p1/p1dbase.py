@@ -9,21 +9,20 @@ class P1DBase:
         cur = con.cursor()
         query = ('CREATE TABLE IF NOT EXISTS records ('
                       'timestamp   text,'
+                      'locdate   text,'
                       'delivtarief1   float,'
                       'delivtarief2   float'
                  ')')
         cur.execute(query)
         con.close()
 
-    def record(self, timestamp, delivtarief1, delivtarief2):
+    def record(self, timestamp, locdate, delivtarief1, delivtarief2):
         try:
-            print(f"1 {timestamp.isoformat()}/{delivtarief1}/{delivtarief2}")
             con = sqlite3.connect(self.dbasepath)
             cur = con.cursor()
-            query = 'INSERT INTO records VALUES (?,?,?)'
-            cur.execute(query, (timestamp, delivtarief1, delivtarief2))
+            query = 'INSERT INTO records VALUES (?,?,?,?)'
+            cur.execute(query, (timestamp, locdate, delivtarief1, delivtarief2))
             con.commit()
             con.close()
-            print(f"2 {timestamp.isoformat()}/{delivtarief1}/{delivtarief2}")
         except Exception as e:
             print(f"help: {e}")
