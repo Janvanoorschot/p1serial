@@ -20,7 +20,7 @@ class P1Proto:
         }
         self.valpatterns = {
             "kw": re.compile("\(([\\d.]+)\*kWh\)"),
-            "date": re.compile("\(([\\d]+W)\)"),
+            "date": re.compile("\(([\\d]+)(\w)\)"),
         }
 
     async def timer(self):
@@ -33,8 +33,8 @@ class P1Proto:
     def stop(self):
         self.lock.release()
 
-    def parse_kw(self, val):
-        pattern = self.valpatterns["kw"]
+    def parse_date(self, val):
+        pattern = self.valpatterns["date"]
         msub = pattern.match(val)
         if msub:
             datestr = msub.group(1)
@@ -43,8 +43,8 @@ class P1Proto:
         else:
             return None
 
-    def parse_date(self, val):
-        pattern = self.valpatterns["date"]
+    def parse_kw(self, val):
+        pattern = self.valpatterns["kw"]
         msub = pattern.match(val)
         if msub:
             return float(msub.group(1))
